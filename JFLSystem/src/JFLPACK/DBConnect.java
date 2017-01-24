@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.*;
 
 /**
  *
@@ -36,7 +35,7 @@ public class DBConnect {
             String showAllPlayerRecords = "SELECT * FROM PLAYERS";
             String showAllTeams = "SELECT * FROM TEAMS";
             String showAllMatchesPlayed = "SELECT * FROM MATCHES";
-            String showAllReferees = "SELECT * FROM REFEREES";
+            String showAllReferees = "SELECT * FROM REFEREE";
             String showLeagueTable = "SELECT * FROM LEAGUETABLE";
             
             //store 'view all records' queries in result sets

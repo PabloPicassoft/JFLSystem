@@ -10,5 +10,17 @@ package JFLPACK;
  * @author Paul
  */
 public class Player {
+    String name;
+    int age;
+    String team;
+    boolean captain;
+
+    public Player(String name, int age, String team, boolean captain) {
+        this.name = name;
+        this.age = age;
+        this.team = team;
+        this.captain = captain;
+    }
+    
     
 }
