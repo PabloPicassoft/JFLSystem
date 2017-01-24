@@ -8,6 +8,10 @@ package JFLPACK;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.*;
+
 /**
  *
  * @author Paul
@@ -17,11 +21,31 @@ public class DBConnect {
     public static void main(String[] args) {
 
         try {
+   
             String host = "jdbc:derby://localhost:1527/JFLDB";
             String uName = "JFLAdmin";
             String uPass= "JFLAdmin";
             
-            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Connection connection = DriverManager.getConnection(host, uName, uPass);
+            
+            Statement smtUneditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            Statement smtEditable = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            
+            
+            //query to show all records in specific result set.
+            String showAllPlayerRecords = "SELECT * FROM PLAYERS";
+            String showAllTeams = "SELECT * FROM TEAMS";
+            String showAllMatchesPlayed = "SELECT * FROM MATCHES";
+            String showAllReferees = "SELECT * FROM REFEREES";
+            String showLeagueTable = "SELECT * FROM LEAGUETABLE";
+            
+            //store 'view all records' queries in result sets
+            ResultSet allPlayersRS = smtUneditable.executeQuery(showAllPlayerRecords);
+            ResultSet allTeamsRS = smtUneditable.executeQuery(showAllTeams);
+            ResultSet allMatchesRS = smtUneditable.executeQuery(showAllMatchesPlayed);
+            ResultSet allRefereesRS = smtUneditable.executeQuery(showAllReferees);
+            ResultSet viewLeagueTableRS = smtUneditable.executeQuery(showLeagueTable);
+            
         }
         catch ( SQLException err ) {
             System.out.println( err.getMessage( ) );
