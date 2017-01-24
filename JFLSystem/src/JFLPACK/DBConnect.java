@@ -17,7 +17,7 @@ public class DBConnect {
     public static void main(String[] args) {
 
         try {
-            String host = "jdbc:derby://localhost:1527/JFLDB [JFLAdmin on JFLADMIN]";
+            String host = "jdbc:derby://localhost:1527/JFLDB";
             String uName = "JFLAdmin";
             String uPass= "JFLAdmin";
             
