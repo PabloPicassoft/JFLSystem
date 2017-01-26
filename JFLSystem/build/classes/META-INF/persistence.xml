@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>GUI.Teams</class>
     <class>GUI.Coaches</class>
+    <class>GUI.Players</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/JFLDB"/>
       <property name="javax.persistence.jdbc.user" value="JFLAdmin"/>

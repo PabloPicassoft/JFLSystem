@@ -23,6 +23,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
      */
     public TeamManagerScreen() {
         initComponents();
+        //DoConnect();
     }
 
     /**
@@ -37,7 +38,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         choice1 = new java.awt.Choice();
         buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnAddRemove = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         textPlayerName = new javax.swing.JTextField();
         textPlayerAge = new javax.swing.JTextField();
@@ -63,15 +64,17 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
+        choice1.setEnabled(false);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Perpetua", 1, 36)); // NOI18N
         jLabel1.setText("Team Manager ");
 
-        jButton1.setText("Add/Remove Players");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAddRemove.setText("Add/Remove Players");
+        btnAddRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddRemoveActionPerformed(evt);
             }
         });
 
@@ -81,7 +84,15 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 jButton2MouseClicked(evt);
             }
         });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
+        textPlayerName.setEnabled(false);
+
+        textPlayerAge.setEnabled(false);
         textPlayerAge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textPlayerAgeActionPerformed(evt);
@@ -99,6 +110,9 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
         jLabel6.setText("Position:");
 
+        choice1.setEnabled(false);
+
+        textPosition.setEnabled(false);
         textPosition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textPositionActionPerformed(evt);
@@ -118,12 +132,19 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         });
 
         saveButton.setText("Save Record");
+        saveButton.setEnabled(false);
+        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveButtonMouseClicked(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Remove Player");
 
         jLabel8.setText("Player Name:");
 
+        textPlayerText.setEnabled(false);
         textPlayerText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textPlayerTextActionPerformed(evt);
@@ -131,6 +152,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         });
 
         deleteButton.setText("Delete Record");
+        deleteButton.setEnabled(false);
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -139,6 +161,8 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
         jLabel9.setText(" Team ID:");
         jLabel9.setPreferredSize(new java.awt.Dimension(50, 14));
+
+        intTeamID.setEnabled(false);
 
         BackHomeButton.setText("Back to Home");
         BackHomeButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -163,7 +187,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnAddRemove)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -237,7 +261,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(btnAddRemove))
                 .addGap(11, 11, 11)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
@@ -292,6 +316,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void textPlayerTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPlayerTextActionPerformed
@@ -300,6 +325,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
+        this.setVisible(false);
         new ViewTeam().setVisible(true);
     }//GEN-LAST:event_jButton2MouseClicked
 
@@ -308,15 +334,32 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_checkboxCaptainMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRemoveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        deleteButton.setEnabled(true);
+        saveButton.setEnabled(true);
+        checkboxCaptain.setEnabled(true);
+        intTeamID.setEnabled(true);
+        textPlayerAge.setEnabled(true);
+        textPlayerName.setEnabled(true);
+        textPlayerText.setEnabled(true);
+        textPosition.setEnabled(true);
+    }//GEN-LAST:event_btnAddRemoveActionPerformed
 
     private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
         // TODO add your handling code here:
-        this.dispose();
+        this.setVisible(false);
         new MainScreen().setVisible(true);
     }//GEN-LAST:event_BackHomeButtonMouseClicked
+
+    private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_saveButtonMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -355,12 +398,12 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackHomeButton;
+    private javax.swing.JButton btnAddRemove;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JCheckBox checkboxCaptain;
     private java.awt.Choice choice1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField intTeamID;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

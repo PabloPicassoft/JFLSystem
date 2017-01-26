@@ -10,7 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -18,9 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class ViewTeam extends javax.swing.JFrame {
 
-    Connection con;
-    Statement stmt;
-    ResultSet rs;
+     Connection con;
+     Statement stmt;
+     ResultSet rs;
     
     /**
      * Creates new form ViewTeam
@@ -39,8 +40,8 @@ public class ViewTeam extends javax.swing.JFrame {
             
             Connection connection = DriverManager.getConnection(host, uName, uPass);
             
-            Statement smtEditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            Statement smtUneditable = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            //Statement smtEditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            Statement smt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             
             
             //query to show all records in specific result set.
@@ -51,8 +52,8 @@ public class ViewTeam extends javax.swing.JFrame {
 //            String showLeagueTable = "SELECT * FROM LEAGUETABLE";
             
             //store 'view all records' queries in result sets
-            ResultSet teamPlayersRS = smtUneditable.executeQuery(showAllPlayerRecords);
-//            ResultSet allTeamsRS = smtUneditable.executeQuery(showAllTeams);
+            ResultSet teamPlayersRS = smt.executeQuery(showAllPlayerRecords);
+//            ResultSet allTeamsRS = smt.executeQuery(showAllTeams);
             
             while(rs.next()){
                 int playerID_col = rs.getInt("PLAYERID");
@@ -68,12 +69,49 @@ public class ViewTeam extends javax.swing.JFrame {
                 
                 String Captain = rs.getString("CAPTAIN");
                 String Position = rs.getString("POSITION");
+                
+                
             }
         }
         catch ( SQLException err ) {
             System.out.println( err.getMessage( ) );
         }
     }
+    
+//    public void FillTable(JTable table, String Query)
+//    {
+//        try
+//        {
+//            
+//            Statement smt = con.createStatement();
+//            ResultSet rs = smt.executeQuery(Query);
+//
+//            //To remove previously added rows
+//            while(jTable1.getRowCount() > 0) 
+//            {
+//                ((DefaultTableModel) jTable1.getModel()).removeRow(0);
+//            }
+//            
+//            int columns = rs.getMetaData().getColumnCount();
+//            
+//            while(rs.next())
+//            {  
+//                Object[] row = new Object[columns];
+//                for (int i = 1; i <= columns; i++)
+//                {  
+//                    row[i - 1] = rs.getObject(i);
+//                }
+//                ((DefaultTableModel) jTable1.getModel()).insertRow(rs.getRow()-1,row);
+//            }
+//
+//            rs.close();
+//            smt.close();
+//            con.close();
+//        }
+//        catch(SQLException e)
+//        {
+//        }
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,31 +121,32 @@ public class ViewTeam extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         JFLDBPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("JFLDBPU").createEntityManager();
-        teamsQuery = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT t FROM Teams t");
-        teamsList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : teamsQuery.getResultList();
-        coachesQuery = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT c FROM Coaches c");
-        coachesList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : coachesQuery.getResultList();
-        coachesQuery1 = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT c FROM Coaches c");
-        coachesList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : coachesQuery1.getResultList();
+        playersQuery = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT p FROM Players p");
+        playersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : playersQuery.getResultList();
         teamnamebutton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         textTeamName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         teamnamebutton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        BackHomeButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         teamnamebutton.setText("Search");
+        teamnamebutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teamnamebuttonActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jLabel1.setText("Enter Team Name:");
+        jLabel1.setText("Enter Team ID:");
 
         textTeamName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,46 +159,107 @@ public class ViewTeam extends javax.swing.JFrame {
 
         teamnamebutton1.setText("Print Record Sheet");
 
+        jTable1.setAutoCreateRowSorter(true);
+
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, playersList, jTable1);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${position}"));
+        columnBinding.setColumnName("Position");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${captain}"));
+        columnBinding.setColumnName("Captain");
+        columnBinding.setColumnClass(Boolean.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${teamid}"));
+        columnBinding.setColumnName("Teamid");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${age}"));
+        columnBinding.setColumnName("Age");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${playername}"));
+        columnBinding.setColumnName("Playername");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${playerid}"));
+        columnBinding.setColumnName("Playerid");
+        columnBinding.setColumnClass(Integer.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane2.setViewportView(jTable1);
+
+        BackHomeButton.setText("Back to Team Manager");
+        BackHomeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackHomeButtonMouseClicked(evt);
+            }
+        });
+        BackHomeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackHomeButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Tip: Sort by clicking column names for descending and descending order.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(jLabel2)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textTeamName, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(teamnamebutton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(teamnamebutton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BackHomeButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(teamnamebutton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(128, 128, 128)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textTeamName, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(teamnamebutton))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(110, 110, 110)
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(102, 102, 102)
+                                    .addComponent(jLabel3))))
+                        .addGap(0, 97, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(165, 165, 165)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(40, 40, 40)
                 .addComponent(jLabel2)
-                .addGap(46, 46, 46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(teamnamebutton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textTeamName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(teamnamebutton1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(teamnamebutton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(BackHomeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(22, 22, 22))
         );
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -167,6 +267,23 @@ public class ViewTeam extends javax.swing.JFrame {
     private void textTeamNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTeamNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textTeamNameActionPerformed
+
+    private void teamnamebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamnamebuttonActionPerformed
+//        // TODO add your handling code here:
+        
+//        String search = textTeamName.getText();
+//        ViewTeam.FillTable(jTable1, "SELECT * FROM PLAYERS WHERE TEAMID == '1'");
+    }//GEN-LAST:event_teamnamebuttonActionPerformed
+
+    private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new TeamManagerScreen().setVisible(true);
+    }//GEN-LAST:event_BackHomeButtonMouseClicked
+
+    private void BackHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackHomeButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BackHomeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,19 +325,19 @@ public class ViewTeam extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackHomeButton;
     private javax.persistence.EntityManager JFLDBPUEntityManager;
-    private java.util.List<GUI.Coaches> coachesList;
-    private java.util.List<GUI.Coaches> coachesList1;
-    private javax.persistence.Query coachesQuery;
-    private javax.persistence.Query coachesQuery1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
+    private java.util.List<GUI.Players> playersList;
+    private javax.persistence.Query playersQuery;
     private javax.swing.JButton teamnamebutton;
     private javax.swing.JButton teamnamebutton1;
-    private java.util.List<GUI.Teams> teamsList;
-    private javax.persistence.Query teamsQuery;
     private javax.swing.JTextField textTeamName;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
