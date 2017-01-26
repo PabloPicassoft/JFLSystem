@@ -18,12 +18,69 @@ import javax.swing.JOptionPane;
  */
 public class TeamManagerScreen extends javax.swing.JFrame {
 
+    Connection con;
+    Statement stmt;
+    ResultSet rs;
     /**
      * Creates new form TeamManagerScreen
      */
     public TeamManagerScreen() {
         initComponents();
-        //DoConnect();
+        DoConnect();
+    }
+    
+        public void DoConnect( ) {
+        try {
+            DBConnect db = new DBConnect();
+            rs = db.connect("SELECT * FROM PLAYERS");
+            
+            /*String host = "jdbc:derby://localhost:1527/JFLDB";
+            String uName = "JFLAdmin";
+            String uPass= "JFLAdmin";
+            
+            Connection connection = DriverManager.getConnection(host, uName, uPass);
+            
+            //Statement smtEditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            Statement smt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            //query to show all records in specific result set.
+            String showAllPlayerRecords = "SELECT * FROM PLAYERS";
+//          String showAllTeams = "SELECT * FROM TEAMS";
+//          String showAllMatchesPlayed = "SELECT * FROM MATCHES";
+//          String showAllReferees = "SELECT * FROM REFEREE";
+//          String showLeagueTable = "SELECT * FROM LEAGUETABLE";
+            
+            //store 'view all records' queries in result sets
+            rs = smt.executeQuery(showAllPlayerRecords);
+//            ResultSet allTeamsRS = smt.executeQuery(showAllTeams);
+            */
+            
+            rs.next();
+            int playerID_col = rs.getInt("PLAYERID");
+            String PlayerID = Integer.toString(playerID_col);
+
+            String PlayerName = rs.getString("PLAYERNAME");
+
+            int playerAge_col = rs.getInt("AGE");
+            String PlayerAge = Integer.toString(playerAge_col);
+
+            int playerTeam_col = rs.getInt("TEAMID");
+            String playerTeam = Integer.toString(playerTeam_col);
+
+            Boolean Captain = rs.getBoolean("CAPTAIN");
+            String Position = rs.getString("POSITION");
+                
+            textPlayerName.setText(PlayerName);  
+            textPlayerAge.setText(PlayerAge);    
+            intTeamID.setText(playerTeam);    
+            intTeamID1.setText(PlayerID);  
+            textPosition.setText(Position); 
+            checkboxCaptain.setEnabled(Captain);
+            
+        }
+        catch ( SQLException err ) {
+            System.out.println( err.getMessage( ) );
+        }
     }
 
     /**
@@ -60,6 +117,14 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         intTeamID = new javax.swing.JTextField();
         BackHomeButton = new javax.swing.JButton();
+        lastButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        previousButton = new javax.swing.JButton();
+        firstButton = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        intTeamID1 = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        cancelButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -68,7 +133,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Perpetua", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Miriam", 1, 36)); // NOI18N
         jLabel1.setText("Team Manager ");
 
         btnAddRemove.setText("Add/Remove Players");
@@ -90,9 +155,6 @@ public class TeamManagerScreen extends javax.swing.JFrame {
             }
         });
 
-        textPlayerName.setEnabled(false);
-
-        textPlayerAge.setEnabled(false);
         textPlayerAge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textPlayerAgeActionPerformed(evt);
@@ -112,7 +174,6 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
         choice1.setEnabled(false);
 
-        textPosition.setEnabled(false);
         textPosition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textPositionActionPerformed(evt);
@@ -139,13 +200,17 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 saveButtonMouseClicked(evt);
             }
         });
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Remove Player");
 
         jLabel8.setText("Player Name:");
 
-        textPlayerText.setEnabled(false);
         textPlayerText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textPlayerTextActionPerformed(evt);
@@ -153,7 +218,6 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         });
 
         deleteButton.setText("Delete Record");
-        deleteButton.setEnabled(false);
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -163,12 +227,55 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         jLabel9.setText(" Team ID:");
         jLabel9.setPreferredSize(new java.awt.Dimension(50, 14));
 
-        intTeamID.setEnabled(false);
-
         BackHomeButton.setText("Back to Home");
         BackHomeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BackHomeButtonMouseClicked(evt);
+            }
+        });
+
+        lastButton.setText("Last");
+        lastButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setText("Next");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        previousButton.setText("Previous");
+        previousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousButtonActionPerformed(evt);
+            }
+        });
+
+        firstButton.setText("First");
+
+        jLabel10.setText("Player ID:");
+        jLabel10.setPreferredSize(new java.awt.Dimension(50, 14));
+
+        intTeamID1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intTeamID1ActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setText("Cancel");
+        cancelButton.setEnabled(false);
+        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelButtonMouseClicked(evt);
+            }
+        });
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
             }
         });
 
@@ -185,109 +292,143 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAddRemove)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(124, 124, 124))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(checkboxCaptain)
+                            .addComponent(textPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textPlayerAge)
+                            .addComponent(textPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(intTeamID, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(144, 144, 144)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(intTeamID1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAddRemove)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(128, 128, 128))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(textPlayerText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(BackHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(checkboxCaptain)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(textPlayerName))
-                                .addGap(18, 18, 18)
+                                        .addGap(23, 23, 23)
+                                        .addComponent(firstButton)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(previousButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textPlayerAge, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                                    .addComponent(textPosition)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(intTeamID, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(saveButton)))
-                        .addGap(22, 22, 22))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lastButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(saveButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(34, 34, 34))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator2)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textPlayerText, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(BackHomeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
-                                .addGap(22, 22, 22))))))
+                        .addGap(142, 142, 142)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator3)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(btnAddRemove))
-                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAddRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textPlayerAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(textPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(textPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(checkboxCaptain))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(intTeamID1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textPlayerAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(intTeamID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(textPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkboxCaptain))
-                .addGap(19, 19, 19)
+                    .addComponent(lastButton)
+                    .addComponent(nextButton)
+                    .addComponent(previousButton)
+                    .addComponent(firstButton))
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(intTeamID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cancelButton))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -296,10 +437,9 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(textPlayerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteButton))
-                .addGap(12, 12, 12)
-                .addComponent(BackHomeButton)
-                .addContainerGap())
+                    .addComponent(deleteButton)
+                    .addComponent(BackHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -319,7 +459,18 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
-        
+        try{
+            rs.deleteRow();
+            rs.next();
+            
+            checkboxCaptain.setEnabled(rs.getBoolean("CAPTAIN"));
+            intTeamID.setText(rs.getString("TEAMID"));
+            textPlayerAge.setText(rs.getString("AGE"));
+            textPlayerName.setText(rs.getString("PlayerName"));
+            intTeamID1.setText(rs.getString("PLAYERID"));
+            textPosition.setText(rs.getString("Position"));
+        }
+        catch(SQLException errrrrrrr){}
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void textPlayerTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPlayerTextActionPerformed
@@ -341,12 +492,19 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         deleteButton.setEnabled(true);
         saveButton.setEnabled(true);
+        cancelButton.setEnabled(true);
         checkboxCaptain.setEnabled(true);
         intTeamID.setEnabled(true);
         textPlayerAge.setEnabled(true);
         textPlayerName.setEnabled(true);
         textPlayerText.setEnabled(true);
         textPosition.setEnabled(true);
+        
+        nextButton.setEnabled(false);
+        previousButton.setEnabled(false);
+        firstButton.setEnabled(false);
+        lastButton.setEnabled(false);
+        intTeamID1.setEnabled(false);
     }//GEN-LAST:event_btnAddRemoveActionPerformed
 
     private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
@@ -357,12 +515,122 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
         // TODO add your handling code here:
+    /*    nextButton.setEnabled(true);
+        previousButton.setEnabled(true);
+        firstButton.setEnabled(true);
+        lastButton.setEnabled(true);
+        intTeamID1.setEnabled(true);
+        saveButton.setEnabled(false);
+        cancelButton.setEnabled(false);*/
         
     }//GEN-LAST:event_saveButtonMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            rs.next();
+            
+            checkboxCaptain.setEnabled(rs.getBoolean("CAPTAIN"));
+            intTeamID.setText(rs.getString("TEAMID"));
+            textPlayerAge.setText(rs.getString("AGE"));
+            textPlayerName.setText(rs.getString("PlayerName"));
+            intTeamID1.setText(rs.getString("PLAYERID"));
+            textPosition.setText(rs.getString("Position"));
+            
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(TeamManagerScreen.this, "End of File");
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(TeamManagerScreen.this, e.getMessage());
+        }
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        //enable playerID and buttons
+        nextButton.setEnabled(true);
+        previousButton.setEnabled(true);
+        firstButton.setEnabled(true);
+        lastButton.setEnabled(true);
+        intTeamID1.setEnabled(true);
+        saveButton.setEnabled(false);
+        cancelButton.setEnabled(false);
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void lastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_lastButtonActionPerformed
+
+    private void intTeamID1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intTeamID1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_intTeamID1ActionPerformed
+
+    private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            rs.previous();
+            
+            checkboxCaptain.setEnabled(rs.getBoolean("CAPTAIN"));
+            intTeamID.setText(rs.getString("TEAMID"));
+            textPlayerAge.setText(rs.getString("AGE"));
+            textPlayerName.setText(rs.getString("PlayerName"));
+            intTeamID1.setText(rs.getString("PLAYERID"));
+            textPosition.setText(rs.getString("Position"));
+            
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(TeamManagerScreen.this, "Start of File");
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(TeamManagerScreen.this, e.getMessage());
+        }
+    }//GEN-LAST:event_previousButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+        try{
+        
+            rs.moveToInsertRow();
+            rs.updateString("PLAYERNAME", textPlayerName.getText());
+            rs.updateString("AGE", textPlayerAge.getText());
+            rs.updateString("TEAMID", intTeamID.getText());
+            rs.updateBoolean("CAPTAIN", checkboxCaptain.isEnabled());
+            rs.updateString("POSITION", textPosition.getText());
+            
+            rs.insertRow();
+            
+            
+            //stmt.close();
+            rs.close();
+            
+            DBConnect db = new DBConnect();
+            rs = db.connect("SELECT * FROM PLAYERS");
+            rs.next();
+            checkboxCaptain.setEnabled(rs.getBoolean("CAPTAIN"));
+            intTeamID.setText(rs.getString("TEAMID"));
+            textPlayerAge.setText(rs.getString("AGE"));
+            textPlayerName.setText(rs.getString("PlayerName"));
+            intTeamID1.setText(rs.getString("PLAYERID"));
+            textPosition.setText(rs.getString("Position"));
+            nextButton.setEnabled(true);
+            previousButton.setEnabled(true);
+            firstButton.setEnabled(true);
+            lastButton.setEnabled(true);
+            intTeamID1.setEnabled(true);
+            saveButton.setEnabled(false);
+            cancelButton.setEnabled(false);
+            
+        
+        }catch(SQLException errr){
+        JOptionPane.showMessageDialog(TeamManagerScreen.this, errr.getMessage());
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,13 +671,17 @@ public class TeamManagerScreen extends javax.swing.JFrame {
     private javax.swing.JButton BackHomeButton;
     private javax.swing.JButton btnAddRemove;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JCheckBox checkboxCaptain;
     private java.awt.Choice choice1;
     private java.awt.Choice choice2;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton firstButton;
     private javax.swing.JTextField intTeamID;
+    private javax.swing.JTextField intTeamID1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -423,6 +695,10 @@ public class TeamManagerScreen extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JButton lastButton;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JButton previousButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField textPlayerAge;
     private javax.swing.JTextField textPlayerName;
