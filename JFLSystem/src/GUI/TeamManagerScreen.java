@@ -21,6 +21,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
     Connection con;
     Statement stmt;
     ResultSet rs;
+    ResultSet rs1;
     /**
      * Creates new form TeamManagerScreen
      */
@@ -29,7 +30,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         DoConnect();
     }
     
-        public void DoConnect( ) {
+    public void DoConnect( ) {
         try {
             
             DBConnect db = new DBConnect();
@@ -77,7 +78,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         btnAddRemove = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        viewTeamButton = new javax.swing.JButton();
         textPlayerName = new javax.swing.JTextField();
         textPlayerAge = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
@@ -124,15 +125,15 @@ public class TeamManagerScreen extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("View Team");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        viewTeamButton.setText("View Team");
+        viewTeamButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                viewTeamButtonMouseClicked(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        viewTeamButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                viewTeamButtonActionPerformed(evt);
             }
         });
 
@@ -307,7 +308,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAddRemove)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(viewTeamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(128, 128, 128))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,7 +370,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAddRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(viewTeamButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -460,10 +461,10 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_textPlayerTextActionPerformed
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void viewTeamButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTeamButtonMouseClicked
         // TODO add your handling code here:
        
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_viewTeamButtonMouseClicked
 
     private void checkboxCaptainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkboxCaptainMouseClicked
         // TODO add your handling code here:
@@ -491,8 +492,13 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
         // TODO add your handling code here:
-        this.setVisible(false);
-        new MainScreen().setVisible(true);
+        
+        try{
+            rs.close();
+            this.setVisible(false);
+             new MainScreen().setVisible(true);
+        }catch(SQLException e){ }
+        
     }//GEN-LAST:event_BackHomeButtonMouseClicked
 
     private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
@@ -507,11 +513,17 @@ public class TeamManagerScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_saveButtonMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void viewTeamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTeamButtonActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        new ViewTeam().setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        try{
+            rs.close();
+            this.setVisible(false);
+            new ViewTeam().setVisible(true);
+        }catch(SQLException e){
+            
+        }
+        
+    }//GEN-LAST:event_viewTeamButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         // TODO add your handling code here:
@@ -594,14 +606,14 @@ public class TeamManagerScreen extends javax.swing.JFrame {
             rs.close();
             
             DBConnect db = new DBConnect();
-            rs = db.connect("SELECT * FROM PLAYERS");
-            rs.next();
-            checkboxCaptain.setEnabled(rs.getBoolean("CAPTAIN"));
-            intTeamID.setText(rs.getString("TEAMID"));
-            textPlayerAge.setText(rs.getString("AGE"));
-            textPlayerName.setText(rs.getString("PlayerName"));
-            intTeamID1.setText(rs.getString("PLAYERID"));
-            textPosition.setText(rs.getString("Position"));
+            rs1 = db.connect("SELECT * FROM PLAYERS");
+            rs1.next();
+            checkboxCaptain.setEnabled(rs1.getBoolean("CAPTAIN"));
+            intTeamID.setText(rs1.getString("TEAMID"));
+            textPlayerAge.setText(rs1.getString("AGE"));
+            textPlayerName.setText(rs1.getString("PlayerName"));
+            intTeamID1.setText(rs1.getString("PLAYERID"));
+            textPosition.setText(rs1.getString("Position"));
             nextButton.setEnabled(true);
             previousButton.setEnabled(true);
             firstButton.setEnabled(true);
@@ -663,7 +675,6 @@ public class TeamManagerScreen extends javax.swing.JFrame {
     private javax.swing.JButton firstButton;
     private javax.swing.JTextField intTeamID;
     private javax.swing.JTextField intTeamID1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -688,5 +699,6 @@ public class TeamManagerScreen extends javax.swing.JFrame {
     private javax.swing.JTextField textPlayerName;
     private javax.swing.JTextField textPlayerText;
     private javax.swing.JTextField textPosition;
+    private javax.swing.JButton viewTeamButton;
     // End of variables declaration//GEN-END:variables
 }

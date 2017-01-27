@@ -284,7 +284,7 @@ public class ViewTeam extends javax.swing.JFrame {
         //userEnteredID = Integer.parseInt(textTeamName.getText());
         try{
         //rs.close();
-        DBConnect dbc = new DBConnect();
+        //DBConnect dbc = new DBConnect();
         //ResultSet llama = dbc.connect("SELECT * FROM PLAYERS WHERE TEAMID = " + textTeamName.getText());
         
         //DefaultTableModel model = (DefaultTableModel) TeamTable.getModel();
@@ -292,7 +292,7 @@ public class ViewTeam extends javax.swing.JFrame {
         //TeamTable.selectAll();
         //TeamTable.clearSelection();
         //playersList.clear();
-        Query query = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT * FROM PLAYERS * WHERE *.TEAMID = " + textTeamName.getText());
+        Query query = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT * FROM PLAYERS * WHERE * TEAMID = " + textTeamName.getText());
         List list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
 //        while(true){
 //        //model.addRow(new Object[]{llama.getString("POSITION"), llama.getBoolean("CAPTAIN"), Integer.toString(llama.getInt("TEAMID")),Integer.toString(llama.getInt("AGE")),llama.getString("PLAYERNAME"),Integer.toString(llama.getInt("PLAYERID"))});
@@ -315,14 +315,19 @@ public class ViewTeam extends javax.swing.JFrame {
 
     private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
         // TODO add your handling code here:
-        this.dispose();
-        new TeamManagerScreen().setVisible(true);
+
     }//GEN-LAST:event_BackHomeButtonMouseClicked
 
     private void BackHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackHomeButtonActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        new TeamManagerScreen().setVisible(true);
+        try{
+            rs.close();
+            this.setVisible(false);
+            new TeamManagerScreen().setVisible(true);
+        }catch(SQLException e){
+            
+        }
+        
     }//GEN-LAST:event_BackHomeButtonActionPerformed
 
     private void teamnamebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_teamnamebuttonMouseClicked

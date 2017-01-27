@@ -21,8 +21,23 @@ public class JFLManagerScreen extends javax.swing.JFrame {
     /**
      * Creates new form JFLManagerScreen
      */
+    ResultSet rs;
+    
     public JFLManagerScreen() {
         initComponents();
+        DoConnect();
+    }
+    
+    public void DoConnect( ) {
+        try {
+
+            DBConnect db = new DBConnect();
+            rs = db.connect("SELECT * FROM MATCHES");
+
+        }
+        catch ( Exception err ) {
+            System.out.println( err.getMessage( ) );
+        }
     }
 
     /**
@@ -45,23 +60,23 @@ public class JFLManagerScreen extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         BackHomeButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        intTeamID = new javax.swing.JTextField();
-        textPlayerName = new javax.swing.JTextField();
-        textPlayerAge = new javax.swing.JTextField();
+        textMatchDate = new javax.swing.JTextField();
+        textHomeTeam = new javax.swing.JTextField();
+        textAwayTeam = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        textPosition = new javax.swing.JTextField();
+        AwayTeamScore = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         saveMatchButton = new javax.swing.JButton();
-        intTeamID1 = new javax.swing.JTextField();
+        intRefID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        textPosition1 = new javax.swing.JTextField();
+        homeTeamScore = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -87,11 +102,22 @@ public class JFLManagerScreen extends javax.swing.JFrame {
         jLabel9.setText("Match Date:");
         jLabel9.setPreferredSize(new java.awt.Dimension(50, 14));
 
-        intTeamID.setText("YYYY-MM-DD");
-
-        textPlayerAge.addActionListener(new java.awt.event.ActionListener() {
+        textMatchDate.setText("YYYY-MM-DD");
+        textMatchDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPlayerAgeActionPerformed(evt);
+                textMatchDateActionPerformed(evt);
+            }
+        });
+
+        textHomeTeam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textHomeTeamActionPerformed(evt);
+            }
+        });
+
+        textAwayTeam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textAwayTeamActionPerformed(evt);
             }
         });
 
@@ -104,9 +130,9 @@ public class JFLManagerScreen extends javax.swing.JFrame {
 
         jLabel6.setText("Away Team Score: ");
 
-        textPosition.addActionListener(new java.awt.event.ActionListener() {
+        AwayTeamScore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPositionActionPerformed(evt);
+                AwayTeamScoreActionPerformed(evt);
             }
         });
 
@@ -122,6 +148,12 @@ public class JFLManagerScreen extends javax.swing.JFrame {
         saveMatchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMatchButtonActionPerformed(evt);
+            }
+        });
+
+        intRefID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intRefIDActionPerformed(evt);
             }
         });
 
@@ -156,11 +188,11 @@ public class JFLManagerScreen extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("League Table Preview");
 
-        jLabel8.setText("Away Team Score: ");
+        jLabel8.setText("Home Team Score: ");
 
-        textPosition1.addActionListener(new java.awt.event.ActionListener() {
+        homeTeamScore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPosition1ActionPerformed(evt);
+                homeTeamScoreActionPerformed(evt);
             }
         });
 
@@ -201,29 +233,29 @@ public class JFLManagerScreen extends javax.swing.JFrame {
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel8)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(textPosition1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(homeTeamScore, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(intTeamID, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(textMatchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(textPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                    .addComponent(textHomeTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                             .addGap(57, 57, 57)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(intTeamID1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(intRefID, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel4)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(textPlayerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(textAwayTeam, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel6)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(textPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                    .addComponent(AwayTeamScore, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                             .addGap(71, 71, 71)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,22 +277,22 @@ public class JFLManagerScreen extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textPlayerAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textAwayTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(textPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textHomeTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(textPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AwayTeamScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(textPosition1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(homeTeamScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(intTeamID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textMatchDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(intTeamID1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(intRefID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(saveMatchButton)
                 .addGap(25, 25, 25)
@@ -285,27 +317,63 @@ public class JFLManagerScreen extends javax.swing.JFrame {
         new MainScreen().setVisible(true);
     }//GEN-LAST:event_BackHomeButtonMouseClicked
 
-    private void textPlayerAgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPlayerAgeActionPerformed
+    private void textAwayTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textAwayTeamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textPlayerAgeActionPerformed
+    }//GEN-LAST:event_textAwayTeamActionPerformed
 
-    private void textPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPositionActionPerformed
+    private void AwayTeamScoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AwayTeamScoreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textPositionActionPerformed
+    }//GEN-LAST:event_AwayTeamScoreActionPerformed
 
     private void saveMatchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveMatchButtonMouseClicked
         // TODO add your handling code here:
 
     }//GEN-LAST:event_saveMatchButtonMouseClicked
 
-    private void textPosition1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPosition1ActionPerformed
+    private void homeTeamScoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeTeamScoreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textPosition1ActionPerformed
+    }//GEN-LAST:event_homeTeamScoreActionPerformed
 
     private void saveMatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMatchButtonActionPerformed
         // TODO add your handling code here:
+        try{
         
+            rs.next();
+            rs.moveToInsertRow();  
+            
+            rs.updateString("HOMETEAM", textHomeTeam.getText());
+            rs.updateString("AWAYTEAM", textAwayTeam.getText());
+            rs.updateString("MATCHDATE", textMatchDate.getText());
+            rs.updateString("AWAYSCORE", AwayTeamScore.getText());
+            rs.updateString("HOMESCORE", homeTeamScore.getText());
+            rs.updateString("REFEREE", intRefID.getText());
+            
+            rs.insertRow();
+            rs.close();
+
+            textMatchDate.setText("");
+            textAwayTeam.setText("");
+            textHomeTeam.setText("");
+            homeTeamScore.setText("");
+            AwayTeamScore.setText("");
+            intRefID.setText("");    
+            
+        }catch(SQLException errr){
+            JOptionPane.showMessageDialog(JFLManagerScreen.this, errr.getMessage());
+        }
     }//GEN-LAST:event_saveMatchButtonActionPerformed
+
+    private void textHomeTeamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textHomeTeamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textHomeTeamActionPerformed
+
+    private void textMatchDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMatchDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textMatchDateActionPerformed
+
+    private void intRefIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intRefIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_intRefIDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -343,10 +411,11 @@ public class JFLManagerScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField AwayTeamScore;
     private javax.swing.JButton BackHomeButton;
     private javax.persistence.EntityManager JFLDBPUEntityManager;
-    private javax.swing.JTextField intTeamID;
-    private javax.swing.JTextField intTeamID1;
+    private javax.swing.JTextField homeTeamScore;
+    private javax.swing.JTextField intRefID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -369,10 +438,9 @@ public class JFLManagerScreen extends javax.swing.JFrame {
     private java.util.List<GUI.Matches> matchesList;
     private javax.persistence.Query matchesQuery;
     private javax.swing.JButton saveMatchButton;
-    private javax.swing.JTextField textPlayerAge;
-    private javax.swing.JTextField textPlayerName;
-    private javax.swing.JTextField textPosition;
-    private javax.swing.JTextField textPosition1;
+    private javax.swing.JTextField textAwayTeam;
+    private javax.swing.JTextField textHomeTeam;
+    private javax.swing.JTextField textMatchDate;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

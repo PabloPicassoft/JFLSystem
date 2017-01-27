@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 public class DBConnect {
 
     ResultSet rs;
+    
     public ResultSet connect(String SQLStatment){
         
         try {
@@ -40,25 +41,7 @@ public class DBConnect {
             String getRecord = SQLStatment;
             
             rs = smt.executeQuery(getRecord);
-            
-            
-            //Statement smtEditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            //Statement smtUneditable = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            
-            
-            //query to show all records in specific result set.
-            /*String showAllPlayerRecords = "SELECT * FROM PLAYERS";
-            String showAllTeams = "SELECT * FROM TEAMS";
-            String showAllMatchesPlayed = "SELECT * FROM MATCHES";
-            String showAllReferees = "SELECT * FROM REFEREE";
-            String showLeagueTable = "SELECT * FROM LEAGUETABLE";*/
-            
-            //store 'view all records' queries in result sets
-            /*ResultSet allPlayersRS = smtUneditable.executeQuery(showAllPlayerRecords);
-            ResultSet allTeamsRS = smtUneditable.executeQuery(showAllTeams);
-            ResultSet allMatchesRS = smtUneditable.executeQuery(showAllMatchesPlayed);
-            ResultSet allRefereesRS = smtUneditable.executeQuery(showAllReferees);
-            ResultSet viewLeagueTableRS = smtUneditable.executeQuery(showLeagueTable);*/
+
         } catch ( SQLException err ) {
             System.out.println( err.getMessage( ) );
         }

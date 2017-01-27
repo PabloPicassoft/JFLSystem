@@ -109,17 +109,17 @@
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="textPosition1" min="-2" pref="39" max="-2" attributes="0"/>
+                                                  <Component id="homeTeamScore" min="-2" pref="39" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel9" min="-2" pref="68" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="intTeamID" min="-2" pref="99" max="-2" attributes="0"/>
+                                                  <Component id="textMatchDate" min="-2" pref="99" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel5" min="-2" pref="75" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="textPlayerName" min="-2" pref="125" max="-2" attributes="0"/>
+                                                  <Component id="textHomeTeam" min="-2" pref="125" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
@@ -127,17 +127,17 @@
                                               <Group type="102" attributes="0">
                                                   <Component id="jLabel10" min="-2" pref="64" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="intTeamID1" min="-2" pref="61" max="-2" attributes="0"/>
+                                                  <Component id="intRefID" min="-2" pref="61" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="textPlayerAge" min="-2" pref="137" max="-2" attributes="0"/>
+                                                  <Component id="textAwayTeam" min="-2" pref="137" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="textPosition" min="-2" pref="35" max="-2" attributes="0"/>
+                                                  <Component id="AwayTeamScore" min="-2" pref="35" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -173,24 +173,24 @@
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="textPlayerAge" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textAwayTeam" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="textPlayerName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textHomeTeam" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="textPosition" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="AwayTeamScore" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="textPosition1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="homeTeamScore" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="intTeamID" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textMatchDate" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="intTeamID1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="intRefID" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="saveMatchButton" min="-2" max="-2" attributes="0"/>
@@ -234,16 +234,22 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="intTeamID">
+    <Component class="javax.swing.JTextField" name="textMatchDate">
       <Properties>
         <Property name="text" type="java.lang.String" value="YYYY-MM-DD"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="textPlayerName">
-    </Component>
-    <Component class="javax.swing.JTextField" name="textPlayerAge">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textPlayerAgeActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textMatchDateActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textHomeTeam">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textHomeTeamActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textAwayTeam">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textAwayTeamActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -269,9 +275,9 @@
         <Property name="text" type="java.lang.String" value="Away Team Score: "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="textPosition">
+    <Component class="javax.swing.JTextField" name="AwayTeamScore">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textPositionActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AwayTeamScoreActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">
@@ -291,7 +297,10 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveMatchButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="intTeamID1">
+    <Component class="javax.swing.JTextField" name="intRefID">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="intRefIDActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -344,12 +353,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Away Team Score: "/>
+        <Property name="text" type="java.lang.String" value="Home Team Score: "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="textPosition1">
+    <Component class="javax.swing.JTextField" name="homeTeamScore">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textPosition1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="homeTeamScoreActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

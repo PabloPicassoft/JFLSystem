@@ -181,6 +181,7 @@ public class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.setVisible(false);
         new TeamManagerScreen().setVisible(true);
+        
     }//GEN-LAST:event_teamManagerButtonMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
