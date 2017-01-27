@@ -59,11 +59,10 @@ public class DBConnect {
             ResultSet allMatchesRS = smtUneditable.executeQuery(showAllMatchesPlayed);
             ResultSet allRefereesRS = smtUneditable.executeQuery(showAllReferees);
             ResultSet viewLeagueTableRS = smtUneditable.executeQuery(showLeagueTable);*/
-            
-        }
-        catch ( SQLException err ) {
+        } catch ( SQLException err ) {
             System.out.println( err.getMessage( ) );
         }
+        
         return rs;
     }
 }

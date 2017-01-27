@@ -4,8 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/GUI/TeamManagerScreen.java</file>
+            <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/JFLPACK/DBConnect1.java</file>
             <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/GUI/JFLManagerScreen.java</file>
-            <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/JFLPACK/DBConnect.java</file>
+            <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/GUI/ViewTeam.java</file>
+            <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/GUI/DBConnect.java</file>
+            <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/GUI/LeagueTable.java</file>
+            <file>file:/C:/Users/Paul/Projects/JFLSystem/JFLSystem/src/GUI/MainScreen.java</file>
         </group>
     </open-files>
 </project-private>

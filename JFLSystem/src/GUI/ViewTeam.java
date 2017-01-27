@@ -128,8 +128,11 @@ public class ViewTeam extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         JFLDBPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("JFLDBPU").createEntityManager();
+        playersQuery = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT p FROM Players p");
+        playersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : playersQuery.getResultList();
         teamnamebutton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         textTeamName = new javax.swing.JTextField();
@@ -169,6 +172,28 @@ public class ViewTeam extends javax.swing.JFrame {
         teamnamebutton1.setText("Print Record Sheet");
 
         TeamTable.setAutoCreateRowSorter(true);
+
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, playersList, TeamTable);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${playerid}"));
+        columnBinding.setColumnName("Playerid");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${teamid}"));
+        columnBinding.setColumnName("Teamid");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${playername}"));
+        columnBinding.setColumnName("Playername");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${age}"));
+        columnBinding.setColumnName("Age");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${position}"));
+        columnBinding.setColumnName("Position");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${captain}"));
+        columnBinding.setColumnName("Captain");
+        columnBinding.setColumnClass(Boolean.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
         jScrollPane2.setViewportView(TeamTable);
 
         BackHomeButton.setText("Back to Team Manager");
@@ -245,6 +270,8 @@ public class ViewTeam extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
+        bindingGroup.bind();
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -258,15 +285,15 @@ public class ViewTeam extends javax.swing.JFrame {
         try{
         //rs.close();
         DBConnect dbc = new DBConnect();
-        ResultSet llama = dbc.connect("SELECT * FROM PLAYERS WHERE TEAMID = " + textTeamName.getText());
+        //ResultSet llama = dbc.connect("SELECT * FROM PLAYERS WHERE TEAMID = " + textTeamName.getText());
         
         //DefaultTableModel model = (DefaultTableModel) TeamTable.getModel();
         
         //TeamTable.selectAll();
         //TeamTable.clearSelection();
         //playersList.clear();
-        Query thing = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT * FROM PLAYERS * WHERE *.TEAMID = " + textTeamName.getText());
-        List whatever = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : thing.getResultList();
+        Query query = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT * FROM PLAYERS * WHERE *.TEAMID = " + textTeamName.getText());
+        List list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
 //        while(true){
 //        //model.addRow(new Object[]{llama.getString("POSITION"), llama.getBoolean("CAPTAIN"), Integer.toString(llama.getInt("TEAMID")),Integer.toString(llama.getInt("AGE")),llama.getString("PLAYERNAME"),Integer.toString(llama.getInt("PLAYERID"))});
 //       // playellamaQuery.equals(new Object[]{llama.getString("POSITION"), llama.getBoolean("CAPTAIN"), Integer.toString(llama.getInt("TEAMID")),Integer.toString(llama.getInt("AGE")),llama.getString("PLAYERNAME"),Integer.toString(llama.getInt("PLAYERID"))});
@@ -288,7 +315,7 @@ public class ViewTeam extends javax.swing.JFrame {
 
     private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
         // TODO add your handling code here:
-        this.setVisible(false);
+        this.dispose();
         new TeamManagerScreen().setVisible(true);
     }//GEN-LAST:event_BackHomeButtonMouseClicked
 
@@ -355,8 +382,11 @@ public class ViewTeam extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private java.util.List<GUI.Players> playersList;
+    private javax.persistence.Query playersQuery;
     private javax.swing.JButton teamnamebutton;
     private javax.swing.JButton teamnamebutton1;
     private javax.swing.JTextField textTeamName;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

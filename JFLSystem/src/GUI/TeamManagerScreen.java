@@ -31,29 +31,10 @@ public class TeamManagerScreen extends javax.swing.JFrame {
     
         public void DoConnect( ) {
         try {
+            
             DBConnect db = new DBConnect();
             rs = db.connect("SELECT * FROM PLAYERS");
             
-            /*String host = "jdbc:derby://localhost:1527/JFLDB";
-            String uName = "JFLAdmin";
-            String uPass= "JFLAdmin";
-            
-            Connection connection = DriverManager.getConnection(host, uName, uPass);
-            
-            //Statement smtEditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            Statement smt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-            //query to show all records in specific result set.
-            String showAllPlayerRecords = "SELECT * FROM PLAYERS";
-//          String showAllTeams = "SELECT * FROM TEAMS";
-//          String showAllMatchesPlayed = "SELECT * FROM MATCHES";
-//          String showAllReferees = "SELECT * FROM REFEREE";
-//          String showLeagueTable = "SELECT * FROM LEAGUETABLE";
-            
-            //store 'view all records' queries in result sets
-            rs = smt.executeQuery(showAllPlayerRecords);
-//            ResultSet allTeamsRS = smt.executeQuery(showAllTeams);
-            */
             
             rs.next();
             int playerID_col = rs.getInt("PLAYERID");
@@ -82,7 +63,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
             System.out.println( err.getMessage( ) );
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -470,7 +451,9 @@ public class TeamManagerScreen extends javax.swing.JFrame {
             intTeamID1.setText(rs.getString("PLAYERID"));
             textPosition.setText(rs.getString("Position"));
         }
-        catch(SQLException errrrrrrr){}
+        catch(SQLException error){
+            JOptionPane.showMessageDialog(null, error);
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void textPlayerTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPlayerTextActionPerformed
@@ -479,8 +462,7 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
-        this.setVisible(false);
-        new ViewTeam().setVisible(true);
+       
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void checkboxCaptainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkboxCaptainMouseClicked
@@ -527,6 +509,8 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        new ViewTeam().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
@@ -625,8 +609,8 @@ public class TeamManagerScreen extends javax.swing.JFrame {
             intTeamID1.setEnabled(true);
             saveButton.setEnabled(false);
             cancelButton.setEnabled(false);
+           
             
-        
         }catch(SQLException errr){
         JOptionPane.showMessageDialog(TeamManagerScreen.this, errr.getMessage());
         }

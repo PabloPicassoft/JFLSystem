@@ -16,7 +16,7 @@ import java.sql.ResultSet;
  * @author Paul
  */
 
-public class DBConnect {
+public class DBConnect1 {
 
     ResultSet rs;
     public ResultSet connect(String SQLStatment){
