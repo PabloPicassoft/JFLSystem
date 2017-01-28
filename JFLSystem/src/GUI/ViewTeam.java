@@ -41,28 +41,7 @@ public class ViewTeam extends javax.swing.JFrame {
         try {
             DBConnect db = new DBConnect();
             rs = db.connect("SELECT * FROM PLAYERS");
-            
-            /*String host = "jdbc:derby://localhost:1527/JFLDB";
-            String uName = "JFLAdmin";
-            String uPass= "JFLAdmin";
-            
-            Connection connection = DriverManager.getConnection(host, uName, uPass);
-            
-            //Statement smtEditable = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            Statement smt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            
-            
-            //query to show all records in specific result set.
-            String showAllPlayerRecords = "SELECT * FROM PLAYERS";
-//            String showAllTeams = "SELECT * FROM TEAMS";
-//            String showAllMatchesPlayed = "SELECT * FROM MATCHES";
-//            String showAllReferees = "SELECT * FROM REFEREE";
-//            String showLeagueTable = "SELECT * FROM LEAGUETABLE";
-            
-            //store 'view all records' queries in result sets
-            rs = smt.executeQuery(showAllPlayerRecords);
-//            ResultSet allTeamsRS = smt.executeQuery(showAllTeams);
-            */
+
             while(rs.next()){
                 int playerID_col = rs.getInt("PLAYERID");
                 String PlayerID = Integer.toString(playerID_col);
@@ -85,41 +64,7 @@ public class ViewTeam extends javax.swing.JFrame {
         }
     }
     
-//    public void FillTable(JTable table, String Query)
-//    {
-//        try
-//        {
-//            
-//            Statement smt = con.createStatement();
-//            ResultSet rs = smt.executeQuery(Query);
-//
-//            //To remove previously added rows
-//            while(jTable1.getRowCount() > 0) 
-//            {
-//                ((DefaultTableModel) jTable1.getModel()).removeRow(0);
-//            }
-//            
-//            int columns = rs.getMetaData().getColumnCount();
-//            
-//            while(rs.next())
-//            {  
-//                Object[] row = new Object[columns];
-//                for (int i = 1; i <= columns; i++)
-//                {  
-//                    row[i - 1] = rs.getObject(i);
-//                }
-//                ((DefaultTableModel) jTable1.getModel()).insertRow(rs.getRow()-1,row);
-//            }
-//
-//            rs.close();
-//            smt.close();
-//            con.close();
-//        }
-//        catch(SQLException e)
-//        {
-//        }
-//    }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -283,34 +228,11 @@ public class ViewTeam extends javax.swing.JFrame {
 //        // TODO add your handling code here:
         //userEnteredID = Integer.parseInt(textTeamName.getText());
         try{
-        //rs.close();
-        //DBConnect dbc = new DBConnect();
-        //ResultSet llama = dbc.connect("SELECT * FROM PLAYERS WHERE TEAMID = " + textTeamName.getText());
-        
-        //DefaultTableModel model = (DefaultTableModel) TeamTable.getModel();
-        
-        //TeamTable.selectAll();
-        //TeamTable.clearSelection();
-        //playersList.clear();
+
         Query query = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT * FROM PLAYERS * WHERE * TEAMID = " + textTeamName.getText());
         List list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
-//        while(true){
-//        //model.addRow(new Object[]{llama.getString("POSITION"), llama.getBoolean("CAPTAIN"), Integer.toString(llama.getInt("TEAMID")),Integer.toString(llama.getInt("AGE")),llama.getString("PLAYERNAME"),Integer.toString(llama.getInt("PLAYERID"))});
-//       // playellamaQuery.equals(new Object[]{llama.getString("POSITION"), llama.getBoolean("CAPTAIN"), Integer.toString(llama.getInt("TEAMID")),Integer.toString(llama.getInt("AGE")),llama.getString("PLAYERNAME"),Integer.toString(llama.getInt("PLAYERID"))});
-//        //playersList.add(0, llama.getString("POSITION"));
-//        
-//        playersList.contains(thing.equals(new Object[]{llama.getString("POSITION"), llama.getBoolean("CAPTAIN"), Integer.toString(llama.getInt("TEAMID")),Integer.toString(llama.getInt("AGE")),llama.getString("PLAYERNAME"),Integer.toString(llama.getInt("PLAYERID"))}));
-//        llama.next();
-//        }
-        
-        }//catch (SQLException err){
-          //  JOptionPane.showMessageDialog(null, err);
-        //}
-        catch(Exception e){JOptionPane.showMessageDialog(null, e);}
-        //String searchEnteredID = "WHERE TEAMID = " + textTeamName.getText();
-        //playersQuery = java.beans.Beans.isDesignTime() ? null : JFLDBPUEntityManager.createQuery("SELECT * FROM TEAMS " + searchEnteredID);
-        
-//        playersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : playersQuery.getResultList();
+
+        } catch(Exception e){JOptionPane.showMessageDialog(null, e);}
     }//GEN-LAST:event_teamnamebuttonActionPerformed
 
     private void BackHomeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackHomeButtonMouseClicked
@@ -332,9 +254,7 @@ public class ViewTeam extends javax.swing.JFrame {
 
     private void teamnamebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_teamnamebuttonMouseClicked
         // TODO add your handling code here:
-                
-
-
+               
 //        String search = textTeamName.getText();
 //        ViewTeam.FillTable(jTable1, "SELECT * FROM PLAYERS WHERE TEAMID == '1'");
     }//GEN-LAST:event_teamnamebuttonMouseClicked

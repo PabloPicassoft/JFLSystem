@@ -503,13 +503,6 @@ public class TeamManagerScreen extends javax.swing.JFrame {
 
     private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
         // TODO add your handling code here:
-    /*    nextButton.setEnabled(true);
-        previousButton.setEnabled(true);
-        firstButton.setEnabled(true);
-        lastButton.setEnabled(true);
-        intTeamID1.setEnabled(true);
-        saveButton.setEnabled(false);
-        cancelButton.setEnabled(false);*/
         
     }//GEN-LAST:event_saveButtonMouseClicked
 
